@@ -1,0 +1,7 @@
+    - name: install {{ package }} packages using yum
+      yum: name={{ package }}  state=latest
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+    - name: install {{ package }} using apt
+      apt: name={{ package }} state=latest 
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: configure thinlinc master server
+      script: ../ansible.media/thinlinc/configure_master.sh creates=/var/tmp/thinlinc.configure
+      register: install
+
+    - debug: var=install

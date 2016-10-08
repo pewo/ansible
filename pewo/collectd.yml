@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  remote_user: root
+
+  tasks:
+    - name: ensure collectd is installed
+      yum: name=collectd state=latest
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+    - name: ensure collectd is installed
+      apt: name=collectd state=latest
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: update /etc/collectd.d/influxdb.conf
+      copy: src=files/collectd/influxdb.conf dest=/etc/collectd.d/influxdb.conf
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      register: config
+
+    - name: update /etc/collectd/collectd.conf.d/influxdb.conf
+      copy: src=files/collectd/influxdb.conf dest=/etc/collectd/collectd.conf.d/influxdb.conf
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      register: config
+
+    - name: restart collectd
+      service: name=collectd enabled=yes state=reloaded
+      when: config.changed == true

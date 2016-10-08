@@ -1,0 +1,9 @@
+---
+- hosts: all
+
+  tasks:
+    - name: Create user peter
+      user: name=peter shell=/bin/bash uid=1001 generate_ssh_key=yes password="password hash created by mkpasswd -m sha-512" update_password=on_create
+      register: user
+
+    - debug: var=user

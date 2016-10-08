@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Check python
+      python: 
+        reqstrvar: "Hello" 
+        optstrvar: "World" 
+        reqboolvar: True
+        #optboolvar: False
+
+      register: bepa
+
+    - debug: var=bepa

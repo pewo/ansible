@@ -1,0 +1,86 @@
+#!/usr/bin/perl -w
+
+use strict;
+use Data::Dumper;
+
+my($args) = shift(@ARGV);
+
+my(%hash);
+if ( $args ) {
+	if ( -r $args ) {
+		if ( open(IN,"<$args") ) {
+			foreach ( <IN> ) {
+				chomp;
+				my($key,$value) = split(/\s*=\s*/,$_);
+				if ( $value ) {
+					$value =~ s/\"//g;
+					$value =~ s/\s+$//g;
+					$hash{$key}=$value;
+				}
+			}
+		}
+	}
+}
+
+my(%res);
+my($package) = $hash{package};
+if ( $package ) {
+	my($dpkg) = "/usr/bin/dpkg";
+	if ( -x $dpkg ) {
+		$res{dpkg}="true";
+		#
+		# Debian/Ubuntu...
+		#
+		my(%package);
+		if ( open(POPEN,"$dpkg -s $package |") ) {
+			foreach ( <POPEN> ) {
+				if ( m/(^\w+)\s*:\s*(\w.*)/ ) {
+					$package{lc($1)} = lc($2);
+				}
+			}
+			close(POPEN);
+			print Dumper(\%package);
+		}
+		my($version) = $hash{version};
+		if ( $version ) {
+			if ( $package{version} ) {
+				if ( $package{version} == $version ) {
+					$res{installed}="true";
+					$res{version}="true";
+				}
+			}
+		}
+		elsif ( $package{status} ) {
+			if ( $package{status} =~ /installed/ ) {
+				$res{installed}="true";
+				$res{version}="false";
+			}
+		}
+		else {
+			$res{installed}="false";
+			$res{version}="false";
+		}
+	}
+}
+else {
+	$res{failed}="true";
+	$res{msg}="You have to specify a package name";
+}
+	
+my($res) = "{";
+foreach ( sort keys %res ) {
+	my($value) = $res{$_};
+	$res .= '"';
+	$res .= $_;
+	$res .= '"';
+	$res .= ": ";
+	$res .= '"';
+	$res .= "$value";
+	$res .= '", ';
+}
+
+
+$res =~ s/,\s*$//;
+$res .= "}";
+	
+print $res

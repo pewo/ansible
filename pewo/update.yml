@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: update all packages using yum
+      yum: name=* state=latest
+      when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      register: install
+
+    - debug: var=install
+
+    - name: install aptitude using apt
+      apt: name=aptitude state=latest 
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      register: install
+
+    - debug: var=install
+
+    - name: update all packages using aptitude
+      apt: upgrade=yes
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      register: install
+
+    - debug: var=install
+
+    - name: check uptime 
+      action: chkuptime
+      register: uptime
+
+    - debug: var=uptime

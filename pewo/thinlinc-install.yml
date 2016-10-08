@@ -1,0 +1,9 @@
+---
+- hosts: lxcthin
+
+  tasks:
+    - name: install thinlinc packages
+      script: ../ansible.media/thinlinc/install_packages.sh creates=/var/tmp/thinlinc.install
+      register: install
+
+    - debug: var=install

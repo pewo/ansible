@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+
+  tasks:
+    - include: install_package.yml package=rsync
+
+    - name: update installation media
+      synchronize: src=../ansible.media/thinlinc dest=/var/tmp
+      register: config

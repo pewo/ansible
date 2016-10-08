@@ -1,0 +1,38 @@
+#!/usr/bin/python 
+
+from ansible.module_utils.basic import *
+
+
+DOCUMENTATION = """
+---
+module: python
+version_added: 0.1
+show_description: Check variables...
+options:
+	username:
+		description:
+			- Accept username from the user
+		required: True
+"""
+
+def main():
+
+	module = AnsibleModule( 
+		argument_spec=dict(
+			reqstrvar=dict(required=True),
+			optstrvar=dict(required=False),
+			defstrvar=dict(required=False, default="perl rulez"),
+			reqboolvar=dict(required=True, type='bool'),
+			optboolvar=dict(required=False, type='bool'),
+		),
+		required_one_of = [['optstrvar', 'optboolvar']],
+		mutually_exclusive =  [['optstrvar', 'optboolvar']],
+	)
+
+	#username = dict(required=True)
+	#username = module.params.get('username')
+	#responce = {"hello" : "world"}
+	module.exit_json(changed=False, meta=module.params)
+
+if __name__ == '__main__':
+	main()
