@@ -1,0 +1,50 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+my($args) = shift(@ARGV);
+
+my(%hash);
+$hash{apa}="cepa";
+
+my($copy) = "/tmp/args.copy";
+unlink($copy);
+open(SAVE,">$copy");
+
+if ( $args ) {
+	if ( -r $args ) {
+		if ( open(IN,"<$args") ) {
+			foreach ( <IN> ) {
+				chomp;
+				print SAVE $_ . "\n";
+				my($key,$value) = split(/\s*=\s*/,$_);
+				if ( $value ) {
+					$value =~ s/\"//g;
+					$value =~ s/\s+$//g;
+					$hash{$key}=$value;
+				}
+				print SAVE "key=[$key], value=[$value]\n";
+			}
+		}
+	}
+}
+
+my($res) = "{";
+foreach ( sort keys %hash ) {
+	my($value) = $hash{$_};
+	$res .= '"';
+	$res .= $_;
+	$res .= '"';
+	$res .= ": ";
+	$res .= '"';
+	$res .= "$value";
+	$res .= '", ';
+}
+
+
+$res =~ s/,\s*$//;
+$res .= "}";
+	
+print SAVE $res . "\n";
+close(SAVE);
+print $res

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+inc=$1
+if [ -r $inc ]; then
+	source $inc
+fi
+
+if [ -f "/proc/uptime" ]; then
+	uptime=`cat /proc/uptime`
+	uptime=${uptime%%.*}
+	secs=$uptime
+	days=$(( uptime/60/60/24 ))
+	hours=$(( uptime/60/60%24 ))
+	if [ $detailed ]; then
+		minutes=$(( uptime/60%60 ))
+		seconds=$(( uptime%60 ))
+		uptime="$days days, $hours hours, $minutes minutes and $seconds seconds"
+	else
+		uptime="$days days, $hours hours"
+	fi
+else
+	uptime=""
+	secs=""
+fi
+
+echo -e "{\"inc\":\""$inc"\",\"secs\":\""$secs"\",\"uptime\":\""$uptime"\"}" > /tmp/chkuptime.log
+echo -e "{\"inc\":\""$inc"\",\"secs\":\""$secs"\",\"uptime\":\""$uptime"\"}"
+
+
