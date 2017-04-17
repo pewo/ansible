@@ -1,0 +1,9 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+match_max 10000
+spawn scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no setup.pl.ssh $env(SETUP_USER)@$env(SETUP_TARGET):/tmp
+expect "word:"
+send -- "$env(SETUP_PASSWORD)\r"
+expect eof
+

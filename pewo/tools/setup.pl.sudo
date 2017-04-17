@@ -1,0 +1,18 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+match_max 10000
+spawn /usr/bin/ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $env(SETUP_USER)@$env(SETUP_TARGET)
+expect "*?assword"
+sleep 1
+send -- "$env(SETUP_PASSWORD)\r"
+expect "*$env(SETUP_USER)"
+send -- "sudo -k\r"
+sleep 1
+send -- "sudo /bin/sh -vx /tmp/setup.pl.ssh\r"
+expect "*?assword"
+sleep 1
+send -- "$env(SETUP_PASSWORD)\r"
+sleep 10
+expect "*$env(SETUP_USER)"
+send -- "exit\r"
