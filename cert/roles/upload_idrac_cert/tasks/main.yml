@@ -1,0 +1,5 @@
+---
+
+- name: Upload cert to idrac
+  ansible.builtin.include_tasks: "upload.yml"
+  when: cert is defined

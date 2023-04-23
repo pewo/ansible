@@ -1,0 +1,10 @@
+---
+
+- name : Hello 
+  hosts: cert
+  gather_facts: no
+
+  roles:
+  - role: upload_idrac_cert 
+    tags: upload_idrac_cert
+

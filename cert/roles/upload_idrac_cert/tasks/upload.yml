@@ -1,0 +1,26 @@
+---
+
+- name: Hello
+  debug: var=cert
+
+#
+# Steal with pride from:
+# https://tg-test100.com/configuring-idrac-using-redfish-api-via-ansible
+
+#- name: Upload Certificate to iDRAC
+#  uri:
+#    url: "https://{{ idrac_ip }}/redfish/v1/Managers/iDRAC.Embedded.1/Oem/Dell/DelliDRACCardService/Actions/DelliDRACCardService.ImportSSLCertificate"
+#    method: POST
+#    url_username: "{{ default_user}}"
+#    url_password: "{{ idrac_pass }}"
+#    force_basic_auth: yes
+#    return_content: yes
+#    body_format: json
+#    status_code: 200
+#    validate_certs: no
+#    body: '{
+#      "SSLCertificateFile" : "{{ cert }}",
+#      "CertificateType" : "Server"
+#    }'
+#  no_log: true
+#  register: data
